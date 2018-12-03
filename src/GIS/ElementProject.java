@@ -4,100 +4,98 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class ElementLayer implements GIS_layer {
-	
-	public ElementLayer() {
-		alge=new ArrayList<>();
+public class ElementProject implements GIS_project {
+	public ElementProject() {
+		algl=new ArrayList<>();
 	}
 	
 
 	@Override
-	public boolean add(GIS_element e) {
+	public boolean add(GIS_layer e) {
 
-		return alge.add(e);
+		return algl.add(e);
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends GIS_element> c) {
+	public boolean addAll(Collection<? extends GIS_layer> c) {
 		
-		return alge.addAll(c);
+		return algl.addAll(c);
 	}
 
 	@Override
 	public void clear() {
 		
-		alge.clear();
+		algl.clear();
 		
 	}
 
 	@Override
 	public boolean contains(Object o) {
 		
-		return alge.contains(o);
+		return algl.contains(o);
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
 
-		return alge.containsAll(c);
+		return algl.containsAll(c);
 	}
 
 	@Override
 	public boolean isEmpty() {
 
-		return alge.isEmpty();
+		return algl.isEmpty();
 	}
 
 	@Override
-	public Iterator<GIS_element> iterator() {
+	public Iterator<GIS_layer> iterator() {
 
-		return alge.iterator();
+		return algl.iterator();
 	}
 
 	@Override
 	public boolean remove(Object o) {
 		
-		return alge.remove(o);
+		return algl.remove(o);
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
 
-		return alge.removeAll(c);
+		return algl.removeAll(c);
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
 		
-		return alge.retainAll(c);
+		return algl.retainAll(c);
 	}
 
 	@Override
 	public int size() {
 		
-		return alge.size();
+		return algl.size();
 	}
 
 	@Override
 	public Object[] toArray() {
 
-		return alge.toArray();
+		return algl.toArray();
 	}
 
 	@Override
 	public <T> T[] toArray(T[] a) {
 		
-		return alge.toArray(a);
+		return algl.toArray(a);
 	}
 
 	@Override
 	public Meta_data get_Meta_data() {
-		
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	//////////private/////////////
 	
-	private ArrayList<GIS_element> alge;
-
+	private ArrayList<GIS_layer> algl;
 }

@@ -13,20 +13,11 @@ public class csvWriter {
 
 	private static String commaDelimiter = ",";
 	private static String newLine = "\n";
+	private static ArrayList<String[]> arr = new ArrayList<>();
 
 	private static String headLine="MAC,SSID,AuthMode,FirstSeen,Channel,RSSI,CurrentLatitude,CurrentLongitude,AltitudeMeters,AccuracyMeters,Type,"; //the head line of the csv file.
 
 	public static void writeCsvFile(String fileName) {
-
-		Point3D p=new Point3D(32.1721826821653, 34.8144640170275, 13.6504088889507);
-		Point3D p1=new Point3D(32.1722092595607, 34.8144482983188, 15.376435938028);
-		Element elem1=new Element("40:65:a3:35:4c:c4", "Efrat", "[WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][ESS]", "2017-12-01 10:49:08", "1", "-75", p, "6", "WIFI");
-		String [] efrat=Element.oneElement(elem1);
-		Element elem2=new Element("08:97:58:32:69:c6", "Volvo247", "[WPA2-PSK-CCMP][WPS][ESS]", "01/12/2017  10:49:14", "4", "-81", p1, "8", "WIFI");
-		String [] volvo=Element.oneElement(elem2);
-		ArrayList<String[]> arr = new ArrayList<String[]>(); //this array has all the elements.
-		arr.add(efrat);
-		arr.add(volvo);
 
 		FileWriter fw = null;
 
