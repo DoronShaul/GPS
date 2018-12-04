@@ -11,13 +11,13 @@ public class Element implements GIS_element {
 	 */
 	public Element() {
 		this.point=new Point3D(0, 0, 0);
-		this.md=new metaData();
+		this.md=new Meta_data_Element();
 	}
 	/**
 	 * this function is constructor.
 	 */
 
-	public Element(Point3D p,metaData md) {
+	public Element(Point3D p,Meta_data_Element md) {
 		this.point=p;
 		this.md=md;
 	}
@@ -47,7 +47,7 @@ public class Element implements GIS_element {
 	 */
 	@Override
 	public Meta_data getData() {
-		metaData md=new metaData(this.md);
+		Meta_data_Element md=new Meta_data_Element(this.md);
 		return md;
 		
 	}
@@ -65,7 +65,7 @@ public class Element implements GIS_element {
 	
 	////////////private//////////
 	
-	private metaData md;
+	private Meta_data_Element md;
 	private Point3D point;
 
 }

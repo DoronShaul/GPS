@@ -5,8 +5,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class ElementProject implements GIS_project {
+	
+	/**
+	 * this is a constructor.
+	 */
 	public ElementProject() {
 		algl=new ArrayList<>();
+		mdp= new Meta_data_Project();
 	}
 	
 
@@ -89,13 +94,17 @@ public class ElementProject implements GIS_project {
 		return algl.toArray(a);
 	}
 
+	/**
+	 * this method return the meta_data of the project.
+	 */
 	@Override
 	public Meta_data get_Meta_data() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.mdp;
 	}
 	
 	//////////private/////////////
 	
 	private ArrayList<GIS_layer> algl;
+	private Meta_data_Project mdp;
 }

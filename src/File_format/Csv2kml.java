@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Csv2kml {
+	
+	/**
+	 * this method write a kml file from a csv file.
+	 * @param a: the given arrayList with the csv file's data.
+	 * @param output: the kml file's name.
+	 */
 	  public static void writeFileKML(ArrayList<String[]> a, String output) {
 		    ArrayList<String> content = new ArrayList<String>();
 		    String kmlstart = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +

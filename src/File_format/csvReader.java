@@ -1,6 +1,8 @@
 package File_format;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -10,28 +12,38 @@ import java.util.Scanner;
  */
 public class csvReader {
 
+	/**
+	 * this method read csv file and insert it's data to an arrayList.
+	 * @param fileName: the name of the csv file. 
+	 * @return arrayList with the file's data.
+	 */
 	public static ArrayList<String[]> csv(String fileName) {
 		
 		ArrayList<String[]> array = new ArrayList<>();
 
 		File file=new File(fileName);
-
+		boolean isFirstLine=true;
+		boolean isSecondLine=true;
+		
 		try {
 			
-			Scanner inputStream=new Scanner(file);
-			inputStream.useDelimiter(",");       //split the data where there is comma.
-			while(inputStream.hasNext()) {
-				String[]s=new String[11];
-				for(int i=0;i<11;i++) {
-					String data=inputStream.next();
-					s[i]=data;                      //insert the relevance data to it's place in the string's array.
-					if(!inputStream.hasNext()) {
-						break;
-					}
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line=br.readLine();
+
+			while(line!=null) {
+				String [] splitLine=line.split(",");
+				array.add(splitLine);            //adding the string to the array list.
+				if(isFirstLine) {                //if this is the first line of the csv file.
+					array.remove(splitLine);
+					isFirstLine=false;
 				}
-				array.add(s);            //adding the string to the array list.
+				else if(isSecondLine && isFirstLine==false) {      //if this is the second line of the csv file.
+					array.remove(splitLine);
+					isSecondLine=false;
+				}
+				line=br.readLine();
 			}
-			inputStream.close();
+			br.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,11 +51,5 @@ public class csvReader {
 		
 		
 		return array;	
-	}
-	public static void main(String[] args) {
-		ArrayList<String[]> a = csv("6678.csv");
-		a.remove(0);
-			
-		Csv2kml.writeFileKML(a, "8899.kml");
 	}
 }

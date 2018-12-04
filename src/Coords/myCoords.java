@@ -142,10 +142,6 @@ public class myCoords implements coords_converter {
 		phi=Math.atan2(vector.y(), vector.x());     //arctan(y/x).
 		
 		azi=Math.toDegrees(phi);
-	
-		//double delta=(Math.abs(deltaY)/Math.abs(deltaX));
-		//azi=Math.atan2((Math.sin(Math.toRadians(deltaY))*Math.cos(Math.toRadians(gps1.x()))), ((Math.cos(Math.toRadians(gps0.x()))*Math.sin(Math.toRadians(gps1.x())))-(Math.sin(Math.toRadians(gps0.x()))*Math.cos(Math.toRadians(gps1.x()))*Math.cos(Math.toRadians(deltaY)))));
-		//azi=Math.toDegrees(azi);
 
 
 		if(azi<0) {
