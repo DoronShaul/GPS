@@ -49,7 +49,6 @@ public class csvReader {
 			e.printStackTrace();
 		}
 		
-		
 		return array;	
 	}
 }
