@@ -40,10 +40,13 @@ public class Pacman {
 	}
 	
 	public String toString() {
-		String s="Packman id: "+id+"\nlat: "+lat+"\nlon: "+lon+"\nalt: "+alt+"\nspeed: "+speed+"\nradius: "+radius;
+		String s="Pacman id: "+id+" ,lat: "+lat+" ,lon: "+lon+" ,alt: "+alt+" ,speed: "+speed+" ,radius: "+radius;
 		return s;
 	}
 	
+	public int getId() {
+		return id;
+	}
 	public double getLat() {
 		return lat;
 	}
@@ -57,11 +60,21 @@ public class Pacman {
 	}
 	
 	
+	public double getSpeed() {
+		return speed;
+	}
+	
+
+	public double getRadius() {
+		return radius;
+	}
+
+
 	//////private//////
-	int id;
-	double lat;
-	double lon;
-	double alt;
-	double speed;
-	double radius=1;
+	private int id;
+	private double lat;
+	private double lon;
+	private double alt;
+	private double speed;
+	private double radius=1;
 }

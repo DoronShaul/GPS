@@ -11,36 +11,68 @@ public class FruitsList {
 	 * this method is a constructor.
 	 */
 	public FruitsList() {
-		ArrayList<Fruit> al = new ArrayList<>();
+		al = new ArrayList<>();
+	}
+	/**
+	 * this method is a copy constructor.
+	 * @param fl
+	 */
+	public FruitsList(FruitsList fl) {
+		al= new ArrayList<>();
+		Iterator<Fruit> itf = fl.Iterator();
+		while(itf.hasNext()) {
+			Fruit temp = itf.next();
+			al.add(temp);
+		}
 	}
 	/**
 	 * this method gets the size of the array.
 	 */
-	public static int getSize() {
+	public int getSize() {
 		return al.size();
 	}
 	/**
 	 * this method adding fruit to the list.
 	 */
-	public static void add(Fruit f) {
+	public void add(Fruit f) {
 		al.add(f);
+	}
+	
+	/**
+	 * this method removes a fruit from the list.
+	 * @param f: the fruit to remove.
+	 */
+	public void remove(Fruit f) {	
+		al.remove(f);
+	}
+	/**
+	 * this method returns the last fruit in the list.
+	 */
+	public Fruit lastFruit() {
+		return al.get(al.size()-1);
 	}
 	/**
 	 * this method clears the list.
 	 */
-	public static void clear() {
+	public void clear() {
 		al.clear();
 	}
 	/**
-	 * this method is an iterator.
+	 * this method returns an iterator.
 	 */
-	public static Iterator<Fruit> Iterator() {
+	public Iterator<Fruit> Iterator() {
 		return al.iterator();
+	}
+	/**
+	 * this method returns an arraylist.
+	 */
+	public ArrayList<Fruit> flArray() {
+		return al;
 	}
 	/**
 	 * this method prints the fruits list.
 	 */
-	public static void print() {
+	public void print() {
 		Iterator<Fruit> it = al.iterator();
 		while(it.hasNext()) {
 			Fruit temp= it.next();
@@ -50,5 +82,5 @@ public class FruitsList {
 	}
 	
 	//////private///////
-	static ArrayList<Fruit> al = new ArrayList<Fruit>();
+	private  ArrayList<Fruit> al = new ArrayList<Fruit>();
 }

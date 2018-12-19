@@ -14,6 +14,7 @@ public class Fruit {
 		alt=0;
 		weight=1;
 	}
+	
 	/**
 	 * this method is a constructor.
 	 */
@@ -36,8 +37,11 @@ public class Fruit {
 	}
 
 	public String toString() {
-		String s="Fruit id: "+id+"\nlat: "+lat+"\nlon: "+lon+"\nalt: "+alt+"\nweight: "+weight;
+		String s="Fruit id: "+id+" ,lat: "+lat+" ,lon: "+lon+" ,alt: "+alt+" ,weight: "+weight;
 		return s;
+	}
+	public int getId() {
+		return id;
 	}
 	
 	public double getLat() {

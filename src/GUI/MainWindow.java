@@ -45,17 +45,28 @@ import java.awt.Insets;
 import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.RepaintManager;
 
 
 public class MainWindow extends JFrame implements MouseListener {
 	private boolean pac=false;
 	private boolean fru=false;
 	private boolean def=true;
+	private boolean isFirstPac=true;
+	private boolean isFirstFru=true;
+
 	int []a=new int[2];
 	Point3D p= new Point3D(0, 0);
+	private PacmanList mainPacmanList = new PacmanList();
+	private FruitsList mainFruitsList = new FruitsList();
 
 	
 	public BufferedImage myImage;
+	public BufferedImage myPac;
+	public BufferedImage myFru;
+	public BufferedImage myFru1;
+	public BufferedImage myFru2;
+	
 	
 	public MainWindow() 
 	{
@@ -74,14 +85,19 @@ public class MainWindow extends JFrame implements MouseListener {
 		MenuItem item4 = new MenuItem("Fruit");
 		MenuItem item5 = new MenuItem("Run");
 		MenuItem item6 = new MenuItem("Load");
+		MenuItem item7 = new MenuItem("Clear");
+		
+		
 		
 		menuBar.add(file);
 		menuBar.add(options);
 		file.add(item1);
 		file.add(item6);
+		file.add(item7);
 		file.add(item2);
 		options.add(item3);
 		options.add(item4);
+		
 		options.add(item5);
 		this.setMenuBar(menuBar);
 		item2.setEnabled(true);
@@ -90,17 +106,18 @@ public class MainWindow extends JFrame implements MouseListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand()=="Exit") {
-					PacmanList.clear();
-					FruitsList.clear();
+					mainPacmanList.clear();
+					mainFruitsList.clear();
 					System.exit(0);
 				}
 				if(e.getActionCommand()=="Load") {
 					JFileChooser fc = new JFileChooser();
-					File dir = new File("C:/Users/doron/Desktop");
+					File dir = new File("C:/Users/doron/Desktop/data");
 					fc.setCurrentDirectory(dir);
 					fc.showOpenDialog(getParent());
 					if(fc.getSelectedFile().getName().endsWith(".csv")) {
-						PacmanCsvReader.csv(fc.getSelectedFile().getPath());
+						PacmanCsvReader.csv(fc.getSelectedFile().getPath(), mainPacmanList, mainFruitsList);
+						repaint();
 					}
 					else {
 						System.out.println("ERROR: the file must be a csv file.");
@@ -116,6 +133,13 @@ public class MainWindow extends JFrame implements MouseListener {
 					pac=false;
 					def=false;
 				}
+				if(e.getActionCommand()=="Clear") {
+					mainPacmanList.clear();
+					mainFruitsList.clear();
+					fru=false;
+					pac=false;
+					repaint();
+				}
 				
 				
 			}
@@ -124,10 +148,16 @@ public class MainWindow extends JFrame implements MouseListener {
 		item6.addActionListener(l);
 		item3.addActionListener(l);
 		item4.addActionListener(l);
+		item7.addActionListener(l);
 		
 		
 		try {
 			 myImage = ImageIO.read(new File("Ariel1.png"));
+			 myPac = ImageIO.read(new File("PacMan.png"));
+			 myFru = ImageIO.read(new File("g.png"));
+			 myFru1 = ImageIO.read(new File("g1.png"));
+			 myFru2 = ImageIO.read(new File("g2.png"));
+			 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
@@ -136,8 +166,6 @@ public class MainWindow extends JFrame implements MouseListener {
 	int x = -1;
 	int y = -1;
 
-
-	
 	
 	@Override
 	public void mouseClicked(MouseEvent arg) {
@@ -150,6 +178,7 @@ public class MainWindow extends JFrame implements MouseListener {
 			repaint();
 		
 	}
+
 	public void paint(Graphics g)
 	{
 		g.drawImage(myImage, 0, 0, getWidth()-8, getHeight()-8, this);
@@ -158,53 +187,67 @@ public class MainWindow extends JFrame implements MouseListener {
 			int r = 15;
 			x = x - (r / 2);
 			y = y - (r / 2);
-			//g.fillOval(x, y, r, r);
 			
 		}
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.blue);
-		if(pac) {
-			Pacman pacman = new Pacman(PacmanList.getSize(), p.x(), p.y(), p.z(), 1, 1);  //creating pacman with the current point values.
-			PacmanList.add(pacman);       //adding the pacman to the pacman list.
+		if(pac) {      //if the user selected 'pacman' option.
+			Pacman pacman = new Pacman(mainPacmanList.getSize(), p.x(), p.y(), p.z(), 1, 1);  //creating pacman with the current point values.
+			if(isFirstPac) {            //if this is the first pacman.
+				mainPacmanList.add(pacman);       //adding the pacman to the pacman list.
+				isFirstPac=false;
+			}
+			else if(mainPacmanList.lastPacman().getLat()!=p.x() && mainPacmanList.lastPacman().getLon()!=p.y()) {   //if this pacman already exists, don't add it.
+				mainPacmanList.add(pacman);       //adding the pacman to the pacman list.
+			}
 		}
-		Iterator<Pacman> itp = PacmanList.Iterator();
+		Iterator<Pacman> itp = mainPacmanList.Iterator();
 		while(itp.hasNext()) {
-			g2d.setColor(Color.yellow);       //the color of the pacman.
-			Pacman temp = itp.next();
-			Point3D point = new Point3D(temp.getLat(), temp.getLon(), temp.getAlt());
-			a=Map.coordsToPixels(point, getWidth(), getHeight());	
-			g2d.fillRect((int)(a[0]), (int)(a[1]), 10, 10);      //drawing the current pacman.
-			
+			       //the color of the pacman.
+			Pacman tempPac = itp.next();
+			Point3D point = new Point3D(tempPac.getLat(), tempPac.getLon(), tempPac.getAlt());
+			a=Map.coordsToPixels(point, getWidth(), getHeight());
+			g2d.drawImage(myPac, a[0]-15, a[1]-15, 30, 30, this);     //drawing the current pacman.     
 			
 		}
-		PacmanList.Print();
+		mainPacmanList.Print();
 		if(fru) {
-			Fruit fruit = new Fruit(FruitsList.getSize(), p.x(), p.y(), p.z(), 1);     //creating fruit with the current point values.
-			FruitsList.add(fruit);        //adding the fruit to the fruits list.
+			Fruit fruit = new Fruit(mainFruitsList.getSize(), p.x(), p.y(), p.z(), 1);     //creating fruit with the current point values.
+			if(isFirstFru) {          //if this is the first fruit.
+				mainFruitsList.add(fruit);        //adding the fruit to the fruits list.
+				isFirstFru=false;
+			}
+			else if(mainFruitsList.lastFruit().getLat()!=p.x() && mainFruitsList.lastFruit().getLon()!=p.y()) {   //if this fruit already exists, don't add it.
+				mainFruitsList.add(fruit);        //adding the fruit to the fruits list.
+			}
 		}
-		Iterator<Fruit> itf = FruitsList.Iterator();
+		Iterator<Fruit> itf = mainFruitsList.Iterator();
 		while(itf.hasNext()) {
-			g2d.setColor(Color.RED);       //the color of the fruits.
 			Fruit temp = itf.next();
 			Point3D point1 = new Point3D(temp.getLat(), temp.getLon(), temp.getAlt());
-			a=Map.coordsToPixels(point1, getWidth(), getHeight());	
-			g2d.fillRect((int)(a[0]), (int)(a[1]), 10, 10);    //drawing the current fruit.
-			
+			a=Map.coordsToPixels(point1, getWidth(), getHeight());
+			if(temp.getId()==0) {
+				g2d.drawImage(myFru, a[0]-10, a[1]-10, 20, 20, this);     //printing the current fruit if it's the first.
+			}
+			if(temp.getId()%1==0) {
+				g2d.drawImage(myFru, a[0]-10, a[1]-10, 20, 20, this);    //printing the current fruit if it's id number % 1 = 0.
+			}
+			if(temp.getId()%2==0) {
+				g2d.drawImage(myFru1, a[0]-10, a[1]-10, 20, 20, this);   //printing the current fruit if it's id number % 2 = 0.
+			}
+			if(temp.getId()%3==0) {
+				g2d.drawImage(myFru2, a[0]-10, a[1]-10, 20, 20, this);   //printing the current fruit if it's id number % 3 = 0.
+			}
 		}
+		mainFruitsList.print();
 		if(def) {         //neither pacman nor fruit were selected.
 			g2d.setColor(Color.blue);
-
 			a=Map.coordsToPixels(p, getWidth(), getHeight());
-			g2d.fillRect((int)(a[0]), (int)(a[1]), 10, 10);      //drawing the current point.
-		}
-		
-		
+			g2d.fillOval(a[0]-5, a[1]-5, 10, 10);      //drawing the current point.
+		}		
 
-		
-
-		
-		
 	}
+	
+
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {

@@ -17,7 +17,7 @@ public class PacmanCsvReader {
 	 * @param fileName: the name of the csv file. 
 	 * @return arrayList with the file's data.
 	 */
-	public static void csv(String fileName) {
+	public static void csv(String fileName, PacmanList pl, FruitsList fl) {
 		
 
 		File file=new File(fileName);
@@ -31,12 +31,12 @@ public class PacmanCsvReader {
 				if(splitLine[0].equals("P")) {
 					Pacman p = new Pacman(Integer.parseInt(splitLine[1]), Double.parseDouble(splitLine[2]), Double.parseDouble(splitLine[3]),
 							Double.parseDouble(splitLine[4]), Double.parseDouble(splitLine[5]), Double.parseDouble(splitLine[6]));
-					PacmanList.add(p); 	//adds this Pacman to the Pacman list.
+					pl.add(p); 	//adds this Pacman to the Pacman list.
 				}
 				if(splitLine[0].equals("F")) {
 					Fruit f = new Fruit(Integer.parseInt(splitLine[1]), Double.parseDouble(splitLine[2]), Double.parseDouble(splitLine[3]),
 							Double.parseDouble(splitLine[4]), Double.parseDouble(splitLine[5]));
-					FruitsList.add(f); 	//adds this Fruit to the Fruit list.
+					fl.add(f); 	//adds this Fruit to the Fruit list.
 				}
 				line=br.readLine();
 			}
