@@ -1,5 +1,8 @@
 package GIS;
 
+import Coords.myCoords;
+import Geom.Point3D;
+
 /**
  * this class represents a fruit. fruit has id, latitude, longitude, altitude and weight.
  */
@@ -35,23 +38,48 @@ public class Fruit {
 		this.alt=f.alt;
 		this.weight=f.weight;
 	}
+	/**
+	 * this method returns a point with the coordinates values of a fruit.
+	 */
+	public Point3D fruitToPoint() {
+		Point3D point = new Point3D(this.getLat(), this.getLon(), this.getAlt());
+		return point;
+	}
+	/**
+	 * this method returns the distance between a fruit and a given point.
+	 * @param p: the given point.
+	 */
+	public double distToPoint(Point3D p) {
+		myCoords m = new myCoords();
+		double dist=m.distance3d(this.fruitToPoint(), p);
+		return dist;
+	}
 
 	public String toString() {
 		String s="Fruit id: "+id+" ,lat: "+lat+" ,lon: "+lon+" ,alt: "+alt+" ,weight: "+weight;
 		return s;
 	}
+	/**
+	 * this method returns the id of the fruit.
+	 */
 	public int getId() {
 		return id;
 	}
-	
+	/**
+	 * this method returns the latitude of the fruit.
+	 */
 	public double getLat() {
 		return lat;
 	}
-
+	/**
+	 * this method returns the longitude of the fruit.
+	 */
 	public double getLon() {
 		return lon;
 	}
-
+	/**
+	 * this method returns the altitude of the fruit.
+	 */
 	public double getAlt() {
 		return alt;
 	}

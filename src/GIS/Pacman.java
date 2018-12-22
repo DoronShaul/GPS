@@ -1,5 +1,8 @@
 package GIS;
 
+import Coords.myCoords;
+import Geom.Point3D;
+
 /**
  * this class represents pacman. pacman has id, latitude, longitude, altitude, speed and radius.
  */
@@ -39,6 +42,29 @@ public class Pacman {
 		this.radius=p.radius;
 	}
 	
+	/**
+	 * this method creating a point out of a pacman.
+	 * @param pac: the given pacman.
+	 */
+	public Point3D pacToPoint() {
+		Point3D point = new Point3D(this.getLat(), this.getLon(), this.getAlt());
+		return point;
+	}
+	/**
+	 * this method returns the time from a pacman to a fruit
+	 * by calculate the distance between them, and divides it by the pacman's speed.
+	 * @param fru: the given fruit.
+	 */
+	public double timePacToFruit(Fruit fru) {
+		double time=0;
+		Point3D point=fru.fruitToPoint();
+		myCoords m = new myCoords();
+		double dist=m.distance3d(point, this.pacToPoint());
+		time=dist/this.getSpeed();
+		return time;
+		
+	}
+	
 	public String toString() {
 		String s="Pacman id: "+id+" ,lat: "+lat+" ,lon: "+lon+" ,alt: "+alt+" ,speed: "+speed+" ,radius: "+radius;
 		return s;
@@ -68,6 +94,17 @@ public class Pacman {
 	public double getRadius() {
 		return radius;
 	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+	public void setLon(double lon) {
+		this.lon = lon;
+	}
+	public void setAlt(double alt) {
+		this.alt = alt;
+	}
+
 
 
 	//////private//////

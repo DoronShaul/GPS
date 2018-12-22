@@ -55,6 +55,14 @@ public class PathList {
 	public void clear() {
 		alPath.clear();
 	}
+	/**
+	 * this method returns a path from given index.
+	 * @param index: the given index.
+	 * @return
+	 */
+	public Path getPath(int index) {
+		return alPath.get(index);
+	}
 	
 	/**
 	 * this method returns an iterator.
