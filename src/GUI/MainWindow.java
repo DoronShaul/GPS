@@ -61,9 +61,6 @@ import javax.swing.RepaintManager;
 
 
 public class MainWindow extends JFrame implements ActionListener,MouseListener {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5431285052113509107L;
 	private boolean pac=false;
 	private boolean fru=false;

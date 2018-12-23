@@ -38,13 +38,10 @@ public class Map {
 		ans[1]=(int)((yPixel+0.1));
 		return ans;
 	}
+
 	
-	public static void main(String[] args) {
-		
-	}
 	////private////
-	
-	
+
 	  /*points*/
 	
 	 //top left latitude
