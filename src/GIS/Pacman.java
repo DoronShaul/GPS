@@ -1,5 +1,8 @@
 package GIS;
 
+import java.awt.Color;
+import java.util.Random;
+
 import Coords.myCoords;
 import Geom.Point3D;
 
@@ -7,7 +10,7 @@ import Geom.Point3D;
  * this class represents pacman. pacman has id, latitude, longitude, altitude, speed and radius.
  */
 public class Pacman {
-	
+
 	/**
 	 * this method is a constructor.
 	 */
@@ -41,7 +44,7 @@ public class Pacman {
 		this.speed=p.speed;
 		this.radius=p.radius;
 	}
-	
+
 	/**
 	 * this method creating a point out of a pacman.
 	 * @param pac: the given pacman.
@@ -62,14 +65,14 @@ public class Pacman {
 		double dist=m.distance3d(point, this.pacToPoint());
 		time=dist/this.getSpeed();
 		return time;
-		
+
 	}
-	
+
 	public String toString() {
 		String s="Pacman id: "+id+" ,lat: "+lat+" ,lon: "+lon+" ,alt: "+alt+" ,speed: "+speed+" ,radius: "+radius;
 		return s;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -84,12 +87,12 @@ public class Pacman {
 	public double getAlt() {
 		return alt;
 	}
-	
-	
+
+
 	public double getSpeed() {
 		return speed;
 	}
-	
+
 
 	public double getRadius() {
 		return radius;
@@ -104,6 +107,7 @@ public class Pacman {
 	public void setAlt(double alt) {
 		this.alt = alt;
 	}
+
 
 
 

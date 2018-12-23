@@ -82,7 +82,6 @@ public class GameAlgo {
 				Fruit closeFru = closestFruitToPac(currentPath, fl);      //finds the closest fruit to the current path.
 				if(tempFru==closeFru) {
 					currentPath.fruitAdd(tempFru);				//adds the fruit to the current path.
-					currentPath.adjustTime(closePacFru[1]-currentPath.getOverallTime());		//adjust the time of the current path.
 					fl.remove(tempFru); 				//remove the fruit from the fruits list.
 					break;
 				}
@@ -90,6 +89,54 @@ public class GameAlgo {
 		}
 
 	}
+	/**
+	 * this method finds the given pacman's position in a given time. the method finds the path of the given pacman from the
+	 * path list, and then calculates the exact position of the pacman in that time.
+	 * @param pac: the given pacman.
+	 * @param pl: the given path list.
+	 * @param time: the given time.
+	 * @return the point of the pacman's position in the given time.
+	 */
+	public static Point3D pacPosSpecificTime(Pacman pac,PathList pl, double time) {
+		double diffLat, diffLon, diffAlt, diffTime, totalTime = 0, prevTime;
+		Point3D ans = pac.pacToPoint();
+		int pointIndex = 0;
+		if(time<=0) {                   //if the given time is <=0 , returns the pacman first position.
+			return pac.pacToPoint();
+		}
+		int pacId=pac.getId();               //get the id of the given pacman.
+		Path currentPath = pl.searchPath(pacId);        //finds the path of that pacman.
+		if(time>currentPath.getOverallTime()) {         //if the given time is greater than the overall time of the path, returns the last point of the path.
+			return currentPath.lastPoint();
+		}
+		Point3D prevPoint = currentPath.firstPoint();       //initialize prevPoint with the first point of the path (pacman's first position).
+		Iterator<Point3D> itp = currentPath.Iterator();
+		while(itp.hasNext()) {
+			Point3D currentPoint = itp.next();
+			pointIndex = currentPath.getIndexOfPoint(currentPoint);      //initialize pointIndex with the current point's index in the path.
+			totalTime+=currentPath.getTimeOfIndex(pointIndex);           //total time is the overall time of the path until the current point.
+			if(time==totalTime) {               //if the given time is equals to the total time, returns the current point.
+				return currentPoint;
+			}
+			else if(time<totalTime) {
+				diffLat=currentPoint.x()-prevPoint.x();            //the latitude value difference between the previous point and the current point.
+				diffLon=currentPoint.y()-prevPoint.y();            //the longitude value difference between the previous point and the current point.
+				diffAlt=currentPoint.z()-prevPoint.z();            //the altitude value difference between the previous point and the current point.
+				prevTime=totalTime-currentPath.getTimeOfIndex(pointIndex);          //prevTime=total time until the previous point.
+				diffTime=time-prevTime;                                             
+				diffLat=(diffLat/ currentPath.getTimeOfIndex(pointIndex))*diffTime;     //divides the diffLat by the number of sections there are in between the previous point and the current point(by the time between them), then multiplies it with the diffTime.
+				diffLon=(diffLon/ currentPath.getTimeOfIndex(pointIndex))*diffTime;     //divides the diffLon by the number of sections there are in between the previous point and the current point(by the time between them), then multiplies it with the diffTime.
+				diffAlt=(diffAlt/ currentPath.getTimeOfIndex(pointIndex))*diffTime;     //divides the diffAlt by the number of sections there are in between the previous point and the current point(by the time between them), then multiplies it with the diffTime.
+				ans = new Point3D(prevPoint.x()+diffLat, prevPoint.y()+diffLon, prevPoint.z()+diffAlt);    //adds the diffLat, diffLon and diffAlt to the previous point values.
+				break;
+			}
+			prevPoint=currentPoint;
+		}
+		return ans;
+		
+		
+	}
+	
 
 }
 

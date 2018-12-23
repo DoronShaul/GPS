@@ -3,6 +3,7 @@ import java.awt.BasicStroke;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
-
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -57,7 +58,7 @@ import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 
 
-public class MainWindow extends JFrame implements MouseListener {
+public class MainWindow extends JFrame implements ActionListener,MouseListener {
 	/**
 	 * 
 	 */
@@ -66,10 +67,11 @@ public class MainWindow extends JFrame implements MouseListener {
 	private boolean fru=false;
 	private boolean def=true;
 	private boolean runSim=false;
-	private Random rnd = new Random();
+	double time=0;
 
 	private boolean isFirstPac=true;
 	private boolean isFirstFru=true;
+
 
 	int []currentPointInPixels=new int[2];
 	Point3D p= new Point3D(0, 0);
@@ -77,13 +79,10 @@ public class MainWindow extends JFrame implements MouseListener {
 	private FruitsList mainFruitsList = new FruitsList();
 	private PathList pathlist = new PathList ();
 
-
-
 	public BufferedImage myImage;
 	public BufferedImage myPac;
 	public BufferedImage myFru1;
 	public BufferedImage start;
-
 
 	public MainWindow() 
 	{
@@ -118,69 +117,11 @@ public class MainWindow extends JFrame implements MouseListener {
 		options.add(run);
 		this.setMenuBar(menuBar);
 		exit.setEnabled(true);
-		
-				//***//the role of each button//***//
-		ActionListener l = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(e.getActionCommand()=="Exit") {
-					//clears the game board (clears 'PacmanList' and 'FruitsList')
-					mainPacmanList.clear(); 
-					mainFruitsList.clear();
-					System.exit(0);
-				}
-				//loads a .csv file
-				if(e.getActionCommand()=="Load") {
-					JFileChooser fc = new JFileChooser();
-					File dir = new File("C:/Users/doron/Desktop/data");
-					fc.setCurrentDirectory(dir);
-					fc.showOpenDialog(getParent());
-					if(fc.getSelectedFile().getName().endsWith(".csv")) {
-						PacmanCsvReader.csv(fc.getSelectedFile().getPath(), mainPacmanList, mainFruitsList); //reading the file and generates the PacmanList and the FruitsList 
-						repaint();
-					}
-					else {
-						System.out.println("ERROR: the file must be a csv file."); //if the file isn't a .csv file
-					}
-				}
-				if(e.getActionCommand()=="Pacman") {
-					pac=true;
-					fru=false;
-					def=false;
-					runSim=false;
-				}
-				
-				if(e.getActionCommand()=="Fruit") {
-					fru=true;
-					pac=false;
-					def=false;
-					runSim=false;
-				}
-				
-				if(e.getActionCommand()=="Clear") {
-					mainPacmanList.clear();
-					mainFruitsList.clear();
-					pathlist.clear();
-					fru=false;
-					pac=false;
-					isFirstPac=true;
-					isFirstFru=true;
-					runSim=false;
-					repaint();
-				}
-				//starts the game.
-				if(e.getActionCommand()=="Run") {
-					fru=false;
-					pac=false;
-					def=false;
-					runSim=true;
-					pathlist = new PathList (mainPacmanList);
-					GameAlgo.pathArrange(pathlist, mainFruitsList);
-					repaint();
-				}
-			}
-		};
-		
+
+		//***//the role of each button//***//
+		ActionListener l = new RunPac(this);
+
+
 		exit.addActionListener(l);
 		load.addActionListener(l);
 		pacman.addActionListener(l);
@@ -214,7 +155,54 @@ public class MainWindow extends JFrame implements MouseListener {
 		currentPointInPixels=GIS.Map.coordsToPixels(p, getWidth(), getHeight());        //insert the pixels given by the coordinates values to an double[].	
 		repaint();	
 	}
+	//////////********//////////
+	/**
+	 * this method returns the overall time of the longest path.
+	 * @param pl: given path list.
+	 */
+	public double longestPathByTime(PathList pl) {
+		double overallTime=0;
+		Iterator<Path> itp = pl.Iterator();
+		while(itp.hasNext()) {
+			Path currentPath = itp.next();
+			double currentTime = currentPath.getOverallTime();
+			if(currentTime>overallTime) {
+				overallTime=currentTime;
+			}
+		}
+		return overallTime;
+	}
+	
+	/**
+	 * this method makes the all the pacman from the pacman's list to move by a given time.
+	 * @param pacList: the given pacman's list.
+	 * @param pathList: the given path list.
+	 * @param time: the given time.
+	 */
+	public void pacmanMove(PacmanList pacList,PathList pathList, double time) {
+		int pacIndex=0;
+		Iterator<Pacman> itPac = pacList.Iterator();
+		while(itPac.hasNext()) {
+			Pacman currentPac = itPac.next();
+			pacIndex=pacList.getPacIndex(currentPac);        //gets the pacman's index from the pacman's list.
+			Path currentPath=pathList.getPath(pacIndex);     //finds the path of that pacman.
+			if(time<=currentPath.getOverallTime()) {
+				Point3D nextPoint = GameAlgo.pacPosSpecificTime(currentPac, pathList, time);     //returns the point with the pacman's position after the move.
+				currentPac.setLat(nextPoint.x());              //sets the pacman's latitude to be as the new position latitude.
+				currentPac.setLon(nextPoint.y());              //sets the pacman's longitude to be as the new position longitude.
+				currentPac.setAlt(nextPoint.z());              //sets the pacman's altitude to be as the new position altitude.
+				repaint();
+			}
+			else {
+				currentPac.setLat(currentPath.lastPoint().x());      //sets the pacman's latitude to be as the path's last point latitude.
+				currentPac.setLon(currentPath.lastPoint().y());      //sets the pacman's longitude to be as the path's last point longitude.
+				currentPac.setAlt(currentPath.lastPoint().z());      //sets the pacman's altitude to be as the path's last point altitude.
+			}
+		}
 
+	}
+
+	
 	public void paint(Graphics g)
 	{
 		g.drawImage(myImage, 0, 0, getWidth()-8, getHeight()-8, this);
@@ -236,6 +224,7 @@ public class MainWindow extends JFrame implements MouseListener {
 				mainPacmanList.add(pacman);       //adding the pacman to the pacman list.
 			}
 		}
+		
 		if(fru) {
 			Fruit fruit = new Fruit(mainFruitsList.getSize(), p.x(), p.y(), p.z(), 1);     //creating fruit with the current point values.
 			if(isFirstFru) {          //if this is the first fruit.
@@ -246,6 +235,9 @@ public class MainWindow extends JFrame implements MouseListener {
 				mainFruitsList.add(fruit);        //adding the fruit to the fruits list.
 			}
 		}
+		
+		
+		//**//drawing the fruits//**//
 		Iterator<Fruit> itf = mainFruitsList.Iterator();
 		while(itf.hasNext()) {
 			Fruit temp = itf.next();		
@@ -254,6 +246,8 @@ public class MainWindow extends JFrame implements MouseListener {
 			g2d.drawImage(myFru1, currentPointInPixels[0]-10, currentPointInPixels[1]-10, 20, 20, this); 
 		}
 		mainFruitsList.print();
+		
+		
 		if(def) {         //neither pacman nor fruit were selected.
 			g2d.setColor(Color.blue);
 			currentPointInPixels=Map.coordsToPixels(p, getWidth(), getHeight());
@@ -261,47 +255,26 @@ public class MainWindow extends JFrame implements MouseListener {
 		}
 
 		if(runSim) {
-			Iterator<Pacman> itPac = mainPacmanList.Iterator();
-			int pacIndex=0;
-
-			while(itPac.hasNext()) {
-				Pacman currentPac = itPac.next();
-				pacIndex=mainPacmanList.getPacIndex(currentPac);
-				Path currentPath=pathlist.getPath(pacIndex);
-				Iterator<Point3D> itCurrentPoint = currentPath.Iterator();
-				while(itCurrentPoint.hasNext()) {
-					Point3D nextPoint = itCurrentPoint.next();
-					currentPac.setLat(nextPoint.x());
-					currentPac.setLon(nextPoint.y());
-					currentPac.setAlt(nextPoint.z());
-				}
-			}
+			//pacmanMove(mainPacmanList,pathlist);
+		
 		}
+		//**//drawing the paths//**//
 		Iterator<Path> itPathList = pathlist.Iterator();
 		while(itPathList.hasNext()) {
 			Path temp = itPathList.next();
-			System.out.println("overall time of "+temp.getId()+" is:"+temp.getOverallTime()); ///prints the time of the path///
 			Point3D prevPoint = temp.firstPoint();
 			Point3D startPoint = temp.firstPoint();
 			int [] nextPointPixels= new int[2];
 			int [] startPointPixels = new int [2]; 
 			startPointPixels=Map.coordsToPixels(startPoint, getWidth(), getHeight());
-			///generates a random color for each path
-			float red = rnd.nextFloat();
-			float green = rnd.nextFloat();
-			float blue = rnd.nextFloat();
-			Color rndColor = new Color(red, green, blue);
-			
 			Stroke s = new BasicStroke(3.5f); //makes the lines and dots thicker.
-
 			Iterator<Point3D> itPoint = temp.Iterator();
-			//prints the path
 			while(itPoint.hasNext()) {
 				Point3D tempPoint = itPoint.next();
 				currentPointInPixels=Map.coordsToPixels(prevPoint, getWidth(), getHeight());
 				nextPointPixels=Map.coordsToPixels(tempPoint, getWidth(), getHeight());
 				g2d.setStroke(s);
-				g2d.setColor(rndColor);
+				g2d.setColor(temp.SetColor());
 				g2d.drawLine(currentPointInPixels[0], currentPointInPixels[1], nextPointPixels[0], nextPointPixels[1]); //draw a single section of a path with a line between two points. 
 				g2d.setColor(Color.WHITE);  
 				g2d.fillOval(currentPointInPixels[0]-5, currentPointInPixels[1]-5, 10, 10); //prints the eaten fruits with white dots.
@@ -309,7 +282,7 @@ public class MainWindow extends JFrame implements MouseListener {
 				prevPoint=tempPoint;
 			}
 		}
-		//***//draws each pacman in it's final position //***//
+		//***//draws each pacman in it's current position //***//
 		Iterator<Pacman> itp = mainPacmanList.Iterator();
 		while(itp.hasNext()) {
 			Pacman tempPac = itp.next();
@@ -319,8 +292,13 @@ public class MainWindow extends JFrame implements MouseListener {
 
 		}
 		mainPacmanList.Print();
+
 	}
-	
+
+	public void actionPerformed(ActionEvent e) {
+
+	}
+
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		//System.out.println("mouse entered");
@@ -337,5 +315,95 @@ public class MainWindow extends JFrame implements MouseListener {
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 	}
+	public PathList getPathList() {
+		return pathlist;
+	}
+	public PacmanList getPacmanList() {
+		return mainPacmanList;
+	}
+	/**
+	 * this class responsible to makes the game run.
+	 */
+	public class RunPac implements ActionListener  {
+
+		private MainWindow Mw;
+
+		/**
+		 * this method is a constructor.
+		 */
+		public RunPac(MainWindow mainWindow) {
+			this.Mw=mainWindow;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getActionCommand()=="Exit") {
+				//clears the game board (clears 'PacmanList' and 'FruitsList')
+				mainPacmanList.clear(); 
+				mainFruitsList.clear();
+				System.exit(0);
+			}
+			//loads a .csv file
+			if(e.getActionCommand()=="Load") {
+				JFileChooser fc = new JFileChooser();
+				File dir = new File("C:/Users/doron/Desktop/data");
+				fc.setCurrentDirectory(dir);
+				fc.showOpenDialog(getParent());
+				if(fc.getSelectedFile().getName().endsWith(".csv")) {
+					PacmanCsvReader.csv(fc.getSelectedFile().getPath(), mainPacmanList, mainFruitsList); //reading the file and generates the PacmanList and the FruitsList 
+					repaint();
+				}
+				else {
+					System.out.println("ERROR: the file must be a csv file."); //if the file isn't a .csv file
+				}
+			}
+			if(e.getActionCommand()=="Pacman") {
+				pac=true;
+				fru=false;
+				def=false;
+				runSim=false;
+			}
+
+			if(e.getActionCommand()=="Fruit") {
+				fru=true;
+				pac=false;
+				def=false;
+				runSim=false;
+			}
+
+			if(e.getActionCommand()=="Clear") {
+				mainPacmanList.clear();
+				mainFruitsList.clear();
+				pathlist.clear();
+				fru=false;
+				pac=false;
+				isFirstPac=true;
+				isFirstFru=true;
+				runSim=false;
+				time=0;
+				repaint();
+			}
+			//starts the game.
+			if(e.getActionCommand()=="Run") {
+				fru=false;
+				pac=false;
+				def=false;
+				runSim=true;
+				pathlist = new PathList (mainPacmanList);
+				GameAlgo.pathArrange(pathlist, mainFruitsList);      //arrange the path of each pacman.
+				double longest=longestPathByTime(pathlist);          //finds the longest path.
+				Animation a = new Animation(Mw);
+				Thread myThread = new Thread(a);
+				
+				myThread.start();
+				repaint();
+
+				
+			}
+
+		}
+	
+	}
+
 
 }

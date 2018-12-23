@@ -1,8 +1,11 @@
 package GIS;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
+import Coords.myCoords;
 import GIS.Fruit;
 import GIS.Pacman;
 import Geom.Point3D;
@@ -28,8 +31,12 @@ public class Path {
 	 * this method adds a fruit to the path.
 	 */
 	public void fruitAdd(Fruit f) {
-		Point3D fruitPoint=new Point3D(f.getLat(), f.getLon(), f.getAlt());
-		alp.add(fruitPoint);
+		myCoords m = new myCoords();
+		double dist=m.distance3d(this.lastPoint(), f.fruitToPoint());
+		double time=dist/this.getPac().getSpeed();
+		this.alp.add(f.fruitToPoint());
+		this.alTime.add(time);
+		this.overallTime+=time;
 	}
 	/**
 	 * this method is an iterator.
@@ -109,6 +116,21 @@ public class Path {
 		return alp.get(index);
 	}
 	/**
+	 * this method returns a index from given point.
+	 * @param p: the given point.
+	 */
+	public int getIndexOfPoint(Point3D p) {
+		return alp.indexOf(p);
+	}
+	/**
+	 * this method returns the time of a given index.
+	 * @param index: the given index.
+	 */
+	
+	public double getTimeOfIndex(int index) {		
+		return alTime.get(index);
+	}
+	/**
 	 * this method return the speed of the path's pacman.
 	 */
 	public double getSpeed() {
@@ -120,12 +142,24 @@ public class Path {
 	public Pacman getPac() {		
 		return pacPath;
 	}
+	/**
+	 * this method returns a random color.
+	 */
+	public Color SetColor() {
+		Color rndColor = new Color(red, green, blue);
+		return rndColor;
 
+	}
 	/////private//////
 	private ArrayList<Point3D> alp = new ArrayList<>();
 	private ArrayList<Double> alTime = new ArrayList<>();
 	private double overallTime;
 	private Pacman pacPath;
+	Random rnd = new Random();
+	float red = rnd.nextFloat();
+	float green = rnd.nextFloat();
+	float blue = rnd.nextFloat();
+	
 	
 
 }
