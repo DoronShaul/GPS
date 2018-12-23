@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.FileChooserUI;
 
 import Algorithm.GameAlgo;
@@ -99,6 +101,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 		Menu file = new Menu("File"); 
 		Menu options = new Menu("Options");
 		MenuItem save = new MenuItem("Save");
+		MenuItem kml = new MenuItem("Path2kml");
 		MenuItem exit = new MenuItem("Exit");
 		MenuItem pacman = new MenuItem("Pacman");
 		MenuItem fruit = new MenuItem("Fruit");
@@ -108,6 +111,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 
 		menuBar.add(file);
 		menuBar.add(options);
+		file.add(kml);
 		file.add(save);
 		file.add(load);
 		file.add(clear);
@@ -123,11 +127,13 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 
 
 		exit.addActionListener(l);
+		save.addActionListener(l);
 		load.addActionListener(l);
 		pacman.addActionListener(l);
 		fruit.addActionListener(l);
 		clear.addActionListener(l);
 		run.addActionListener(l);
+		kml.addActionListener(l);
 
 		//importing the game pictures.
 		try {
@@ -172,7 +178,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 		}
 		return overallTime;
 	}
-	
+
 	/**
 	 * this method makes the all the pacman from the pacman's list to move by a given time.
 	 * @param pacList: the given pacman's list.
@@ -202,7 +208,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 
 	}
 
-	
+
 	public void paint(Graphics g)
 	{
 		g.drawImage(myImage, 0, 0, getWidth()-8, getHeight()-8, this);
@@ -224,7 +230,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 				mainPacmanList.add(pacman);       //adding the pacman to the pacman list.
 			}
 		}
-		
+
 		if(fru) {
 			Fruit fruit = new Fruit(mainFruitsList.getSize(), p.x(), p.y(), p.z(), 1);     //creating fruit with the current point values.
 			if(isFirstFru) {          //if this is the first fruit.
@@ -235,8 +241,8 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 				mainFruitsList.add(fruit);        //adding the fruit to the fruits list.
 			}
 		}
-		
-		
+
+
 		//**//drawing the fruits//**//
 		Iterator<Fruit> itf = mainFruitsList.Iterator();
 		while(itf.hasNext()) {
@@ -246,18 +252,15 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 			g2d.drawImage(myFru1, currentPointInPixels[0]-10, currentPointInPixels[1]-10, 20, 20, this); 
 		}
 		mainFruitsList.print();
-		
-		
+
+
 		if(def) {         //neither pacman nor fruit were selected.
 			g2d.setColor(Color.blue);
 			currentPointInPixels=Map.coordsToPixels(p, getWidth(), getHeight());
 			g2d.fillOval(currentPointInPixels[0]-5, currentPointInPixels[1]-5, 10, 10);      //drawing the current point.
 		}
 
-		if(runSim) {
-			//pacmanMove(mainPacmanList,pathlist);
-		
-		}
+
 		//**//drawing the paths//**//
 		Iterator<Path> itPathList = pathlist.Iterator();
 		while(itPathList.hasNext()) {
@@ -343,6 +346,43 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 				mainFruitsList.clear();
 				System.exit(0);
 			}
+			
+			if(e.getActionCommand()=="Path2kml") {
+				JFileChooser jfc = new JFileChooser();
+				File dir = new File("C:/Users/doron/Desktop/data");
+				jfc.setCurrentDirectory(dir);
+				FileFilter fl = new FileNameExtensionFilter("KML file", "kml");
+				jfc.setFileFilter(fl);
+				int returnVal=jfc.showSaveDialog(getParent());
+				if(returnVal==JFileChooser.APPROVE_OPTION) {
+					File savedFile=jfc.getSelectedFile();
+					String fileName = savedFile.toString()+".kml";
+					try {
+						File_format.Path2kml.path2kml(pathlist, fileName);
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+
+			if(e.getActionCommand()=="Save") {
+				JFileChooser jfc = new JFileChooser();
+				File dir = new File("C:/Users/doron/Desktop/data");
+				jfc.setCurrentDirectory(dir);
+				FileFilter fl = new FileNameExtensionFilter("CSV file", "csv");
+				jfc.setFileFilter(fl);
+				int returnVal=jfc.showSaveDialog(getParent());
+				if(returnVal==JFileChooser.APPROVE_OPTION) {
+					File savedFile=jfc.getSelectedFile();
+					String fileName = savedFile.toString()+".csv";
+					try {
+						Algorithm.csvWriter.csvWriter(fileName, mainPacmanList, mainFruitsList);
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}				
+			}
+
 			//loads a .csv file
 			if(e.getActionCommand()=="Load") {
 				JFileChooser fc = new JFileChooser();
@@ -353,6 +393,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 					PacmanCsvReader.csv(fc.getSelectedFile().getPath(), mainPacmanList, mainFruitsList); //reading the file and generates the PacmanList and the FruitsList 
 					repaint();
 				}
+
 				else {
 					System.out.println("ERROR: the file must be a csv file."); //if the file isn't a .csv file
 				}
@@ -394,15 +435,15 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 				double longest=longestPathByTime(pathlist);          //finds the longest path.
 				Animation a = new Animation(Mw);
 				Thread myThread = new Thread(a);
-				
+
 				myThread.start();
 				repaint();
 
-				
+
 			}
 
 		}
-	
+
 	}
 
 

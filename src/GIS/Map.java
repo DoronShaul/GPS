@@ -39,7 +39,9 @@ public class Map {
 		return ans;
 	}
 	
-	
+	public static void main(String[] args) {
+		
+	}
 	////private////
 	
 	
