@@ -75,8 +75,40 @@ public class PacmanList {
 	public Pacman lastPacman() {
 		return al.get(al.size()-1);
 	}
-
-
+	
+	public boolean isExist(int pacId) {
+		Iterator<Pacman> itp = al.iterator();
+		while(itp.hasNext()) {
+			Pacman temp = itp.next();
+			if(temp.getId()==pacId) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * updates the fruitsList according to the pacman that are still in the game.
+	 * @param ali :the array list of the indexes of the pacman.
+	 */
+	public void updatePacmanList(ArrayList<Integer> ali) {
+		if(this.getSize()!=ali.size()) {
+			Iterator<Pacman> itp = this.Iterator();
+			while(itp.hasNext()) {
+				boolean exists=false;
+				Pacman temp = itp.next();
+				for(int i=0;i<ali.size();i++) {
+					if(temp.getId()==ali.get(i)) { //if the current pacman on  the pacman list still exists
+						exists=true;
+						break;
+					}
+				}
+				if(!exists) {
+					itp.remove(); //if the fruit was eaten it gets removed
+				}
+			}
+		}
+		
+	}
 
 	//////private///////
 	private ArrayList<Pacman> al = new ArrayList<Pacman>();

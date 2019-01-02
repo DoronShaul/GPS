@@ -17,11 +17,15 @@ public class Path2kml {
 	/**
 	 * this method convert a paths list to a KML file with all those paths.
 	 * @param pl: the given paths list.
-	 * @param output: the output file name.
-	 * @throws FileNotFoundException
+	 * @param outputFileName: the output file name.
 	 */
-	public static void path2kml(PathList pl, String output) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(new File(output));
+	public static void path2kml(PathList pl, String outputFileName) {
+		PrintWriter pw=null;
+		try {
+			pw = new PrintWriter(new File(outputFileName));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		StringBuilder content = new StringBuilder();
 		
 		//**//the body of the kml file//**//

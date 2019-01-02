@@ -1,6 +1,8 @@
 package GIS;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import Coords.myCoords;
@@ -21,17 +23,19 @@ public class Pacman {
 		alt=0;
 		speed=1;
 		radius=1;
+		score=0;
 	}
 	/**
 	 * this method is a constructor.
 	 */
-	public Pacman(int id, double lat, double lon, double alt, double speed, double radius) {
+	public Pacman(int id, double lat, double lon, double alt, double speed, double radius, int score) {
 		this.id=id;
 		this.lat=lat;
 		this.lon=lon;
 		this.alt=alt;
 		this.speed=speed;
 		this.radius=radius;
+		this.score=score;
 	}
 	/**
 	 * this method is a copy constructor.
@@ -43,6 +47,7 @@ public class Pacman {
 		this.alt=p.alt;
 		this.speed=p.speed;
 		this.radius=p.radius;
+		this.score=p.score;
 	}
 
 	/**
@@ -69,7 +74,7 @@ public class Pacman {
 	}
 
 	public String toString() {
-		String s="Pacman id: "+id+" ,lat: "+lat+" ,lon: "+lon+" ,alt: "+alt+" ,speed: "+speed+" ,radius: "+radius;
+		String s="Pacman id: "+id+" ,lat: "+lat+" ,lon: "+lon+" ,alt: "+alt+" ,speed: "+speed+" ,radius: "+radius+" ,score: "+score;
 		return s;
 	}
 
@@ -97,6 +102,10 @@ public class Pacman {
 	public double getRadius() {
 		return radius;
 	}
+	
+	public int getScore() {
+		return score;
+	}
 
 	public void setLat(double lat) {
 		this.lat = lat;
@@ -107,8 +116,9 @@ public class Pacman {
 	public void setAlt(double alt) {
 		this.alt = alt;
 	}
-
-
+	public void setScore(int score) {
+		this.score = score;
+	}
 
 
 	//////private//////
@@ -118,4 +128,6 @@ public class Pacman {
 	private double alt;
 	private double speed;
 	private double radius=1;
+	private int score;
+	
 }

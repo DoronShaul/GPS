@@ -30,7 +30,7 @@ public class PacmanCsvReader {
 				String [] splitLine=line.split(",");
 				if(splitLine[0].equals("P")) {
 					Pacman p = new Pacman(Integer.parseInt(splitLine[1]), Double.parseDouble(splitLine[2]), Double.parseDouble(splitLine[3]),
-							Double.parseDouble(splitLine[4]), Double.parseDouble(splitLine[5]), Double.parseDouble(splitLine[6]));
+							Double.parseDouble(splitLine[4]), Double.parseDouble(splitLine[5]), Double.parseDouble(splitLine[6]),0);
 					pl.add(p); 	//adds this Pacman to the Pacman list.
 				}
 				if(splitLine[0].equals("F")) {

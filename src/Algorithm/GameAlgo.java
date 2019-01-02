@@ -82,6 +82,7 @@ public class GameAlgo {
 				Fruit closeFru = closestFruitToPac(currentPath, fl);      //finds the closest fruit to the current path.
 				if(tempFru==closeFru) {
 					currentPath.fruitAdd(tempFru);				//adds the fruit to the current path.
+					currentPath.getPac().setScore(currentPath.getPac().getScore()+1);       //adds one to the score of the pacman.
 					fl.remove(tempFru); 				//remove the fruit from the fruits list.
 					break;
 				}

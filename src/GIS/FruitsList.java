@@ -37,7 +37,7 @@ public class FruitsList {
 	public void add(Fruit f) {
 		al.add(f);
 	}
-	
+
 	/**
 	 * this method removes a fruit from the list.
 	 * @param f: the fruit to remove.
@@ -78,9 +78,31 @@ public class FruitsList {
 			Fruit temp= it.next();
 			System.out.println(temp);
 		}
-		
 	}
-	
+	/**
+	 * updates the fruitsList according to the fruits that are still in the game.
+	 * @param ali :the array list of the indexes of the fruits.
+	 */
+	public void updateFruitsList(ArrayList<Integer> ali) {
+		if(this.getSize()!=ali.size()) {  //if fruits were eaten
+			Iterator<Fruit> itf = this.Iterator();
+			while(itf.hasNext()) {
+				boolean exists=false;
+				Fruit temp = itf.next();
+				for(int i=0;i<ali.size();i++) {
+					if(temp.getId()==ali.get(i)) { //if the current fruit on fruits list still exists
+						exists=true;
+						break;
+					}
+				}
+				if(!exists) {
+					itf.remove(); //if the fruit was eaten it gets removed
+				}
+			}
+		}
+
+	}
+
 	//////private///////
 	private  ArrayList<Fruit> al = new ArrayList<Fruit>();
 }
