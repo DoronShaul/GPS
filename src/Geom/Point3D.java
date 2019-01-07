@@ -263,9 +263,9 @@ public class Point3D implements Geom_element, Serializable
 
 	/**
 	 * this method checks if the there is a direct line between two points.
-	 * @param p
-	 * @param bl
-	 * @return
+	 * @param p: the target point.
+	 * @param bl: the given boxes list.
+	 * @return: true if the two points has a direct line between them, false otherwise.
 	 */
 	public boolean isDirect(Point3D p, BoxList bl) {
 		double latDiff, lonDiff, dist;
@@ -282,16 +282,5 @@ public class Point3D implements Geom_element, Serializable
 			tempPoint._y-=lonDiff/dist;
 		}
 		return true;
-	}
-	
-	public static void main(String[] args) {
-		Point3D p = new Point3D(32.10381404416404, 35.211981376842104);
-		Point3D p1 = new Point3D(32.10307935015773, 35.21161296140351);
-		BoxList bl = new BoxList();
-		Point3D min= new Point3D(32.10251929652996, 35.21153502736842);
-		Point3D max= new Point3D(32.10539785173501, 35.21159879157895);
-		Box b =new Box(0, min, max);
-		bl.add(b);
-		System.out.println(p.isDirect(p1, bl));
 	}
 }

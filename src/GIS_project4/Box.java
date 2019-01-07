@@ -34,19 +34,37 @@ public class Box {
 		return s;
 	}
 	
-	
+	/**
+	 * this method returns the minimum point of the box.
+	 */
 	public Point3D getMin() {
 		return min;
 	}
+	
+	/**
+	 * this method sets the minimum point of the box.
+	 */
 	public void setMin(Point3D min) {
 		this.min = min;
 	}
+	
+	/**
+	 * this method returns the maximum point of the box.
+	 */
 	public Point3D getMax() {
 		return max;
 	}
+	
+	/**
+	 * this method sets the maximum point of the box.
+	 */
 	public void setMax(Point3D max) {
 		this.max = max;
 	}
+	
+	/**
+	 * this method returns the box's id.
+	 */
 	public int getId() {
 		return id;
 	}

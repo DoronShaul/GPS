@@ -1,5 +1,7 @@
 package GIS_project4;
 
+import Geom.Point3D;
+
 public class Ghost {
 	/**
 	 * this method is a constructor.
@@ -42,55 +44,97 @@ public class Ghost {
 		return s;
 	}
 	
+	/**
+	 * this method returns the ghost's id.
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * this method sets the ghost's id.
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * this method returns the ghost's latitude.
+	 */
 	public double getLat() {
 		return lat;
 	}
 
+	/**
+	 * this method sets the ghost's latitude.
+	 */
 	public void setLat(double lat) {
 		this.lat = lat;
 	}
 
+	/**
+	 * this method returns the ghost's longitude.
+	 */
 	public double getLon() {
 		return lon;
 	}
 
+	/**
+	 * this method sets the ghost's longitude.
+	 */
 	public void setLon(double lon) {
 		this.lon = lon;
 	}
 
+	/**
+	 * this method returns the ghost's altitude.
+	 */
 	public double getAlt() {
 		return alt;
 	}
 
+	/**
+	 * this method sets the ghost's altitude.
+	 */
 	public void setAlt(double alt) {
 		this.alt = alt;
 	}
 
+	/**
+	 * this method returns the ghost's radius.
+	 */
 	public double getRadius() {
 		return radius;
 	}
 
+	/**
+	 * this method sets the ghost's radius.
+	 */
 	public void setRadius(double radius) {
 		this.radius = radius;
 	}
 
+	/**
+	 * this method returns the ghost's speed.
+	 */
 	public double getSpeed() {
 		return speed;
 	}
-
+	
+	/**
+	 * this method sets the ghost's speed.
+	 */
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 
-
+	/**
+	 * this method returns a point with the ghost location.
+	 */
+	public Point3D ghostToPoint() {
+		Point3D ans = new Point3D(this.getLat(), this.getLon());
+		return ans;
+	}
 	//////private///////
 	int id;
 	private double lat;
@@ -98,4 +142,5 @@ public class Ghost {
 	private double alt;
 	private double radius;
 	private double speed;
+
 }

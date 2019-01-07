@@ -78,44 +78,79 @@ public class Pacman {
 		return s;
 	}
 
+	/**
+	 * this method returns the pacman's id.
+	 */
 	public int getId() {
 		return id;
 	}
+	
+	/**
+	 * this method returns the pacman's latitude.
+	 */
 	public double getLat() {
 		return lat;
 	}
 
+	/**
+	 * this method returns the pacman's longitude.
+	 */
 	public double getLon() {
 		return lon;
 	}
 
+	/**
+	 * this method returns the pacman's altitude.
+	 */
 	public double getAlt() {
 		return alt;
 	}
 
-
+	/**
+	 * this method returns the pacman's speed.
+	 */
 	public double getSpeed() {
 		return speed;
 	}
 
-
+	/**
+	 * this method returns the pacman's radius.
+	 */
 	public double getRadius() {
 		return radius;
 	}
 	
+	/**
+	 * this method returns the pacman's score.
+	 */
 	public int getScore() {
 		return score;
 	}
 
+	/**
+	 * this method sets the pacman's latitude.
+	 */
 	public void setLat(double lat) {
 		this.lat = lat;
 	}
+	
+	/**
+	 * this method sets the pacman's longitude.
+	 */
 	public void setLon(double lon) {
 		this.lon = lon;
 	}
+	
+	/**
+	 * this method sets the pacman's altitude.
+	 */
 	public void setAlt(double alt) {
 		this.alt = alt;
 	}
+	
+	/**
+	 * this method sets the pacman's score.
+	 */
 	public void setScore(int score) {
 		this.score = score;
 	}

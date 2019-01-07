@@ -110,6 +110,22 @@ public class PacmanList {
 		
 	}
 
+	
+	
+	/**this function updates each pacman location according to the game board. 
+	 * 
+	 * @param split :the relevant line in the board which represents the pacman.
+	 */
+	public void updatePacman(String [] split) {
+		Iterator<Pacman> itp = this.Iterator();
+		while(itp.hasNext()) {
+			Pacman temp = itp.next();
+			if(temp.getId()==Integer.parseInt(split[1])) {
+				temp.setLat(Double.parseDouble(split[2])); //sets the temp pacman latitude according to the game board 
+				temp.setLon(Double.parseDouble(split[3])); //sets the temp pacman longitude according to the game board
+			}
+		}
+	}
 	//////private///////
 	private ArrayList<Pacman> al = new ArrayList<Pacman>();
 

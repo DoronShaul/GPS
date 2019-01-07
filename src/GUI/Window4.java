@@ -101,11 +101,13 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 		MenuItem exit = new MenuItem("Exit");
 		MenuItem clear = new MenuItem("Clear");
 		MenuItem run = new MenuItem("Run");
+		MenuItem sim = new MenuItem("Simulation");
 		MenuItem setPlayerPos = new MenuItem("Set Initial Player Position");
 
 		file.add(exit);
 		file.add(clear);
 		file.add(run);
+		file.add(sim);
 		file.add(setPlayerPos);
 
 		//creates the "Gameboard Options" menu bar item
@@ -139,6 +141,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 		///activate the "file" buttons///
 
 		run.addActionListener(l);
+		sim.addActionListener(l);
 		clear.addActionListener(l);
 		exit.addActionListener(l);
 		setPlayerPos.addActionListener(l);
@@ -193,7 +196,8 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 			y = y - (r / 2);
 
 		}
-		Graphics2D g2d = (Graphics2D) g; 
+		Graphics2D g2d = (Graphics2D) g; 		
+		
 		//**//**//Box//**//**//
 
 		///creates the mainBoxList according to the selected file///
@@ -207,7 +211,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 			g2d.setColor(Color.black);
 			g2d.fillRect(currentPointInPixels[0],boxMaxPointInPixels[1], widthSize, heightSize);  //drawing the current box.
 			if(isThereBoxes) {
-				ArrayList<Point3D> boxCorners = mainBoxList.boxesCorners();
+				boxCorners = mainBoxList.boxesCorners();
 				isThereBoxes=false;
 			}
 		}
@@ -475,6 +479,13 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				if(mainFruitsList.getSize()>0 && player.getLat()>0) {
 					Animation4 a4 = new Animation4(w4); 
 					Thread myThread = new Thread(a4);
+					myThread.start();	//starts the animation thread
+				}
+			}
+			if(e.getActionCommand()=="Simulation") {
+				if(mainFruitsList.getSize()>0 && player.getLat()>0) {
+					Simulation sim = new Simulation(w4); 
+					Thread myThread = new Thread(sim);
 					myThread.start();	//starts the animation thread
 				}
 			}
