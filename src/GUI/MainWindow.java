@@ -320,7 +320,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 
 			if(e.getActionCommand()=="Path2kml") {
 				JFileChooser jfc = new JFileChooser();
-				File dir = new File("C:/Users/doron/Desktop/data");
+				File dir = new File("data3/");
 				jfc.setCurrentDirectory(dir);
 				FileFilter fl = new FileNameExtensionFilter("KML file", "kml");
 				jfc.setFileFilter(fl);
@@ -334,7 +334,7 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 
 			if(e.getActionCommand()=="Save") {
 				JFileChooser jfc = new JFileChooser();
-				File dir = new File("C:/Users/doron/Desktop/data");
+				File dir = new File("data3/");
 				jfc.setCurrentDirectory(dir);
 				FileFilter fl = new FileNameExtensionFilter("CSV file", "csv");
 				jfc.setFileFilter(fl);
@@ -353,10 +353,10 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 			//loads a .csv file
 			if(e.getActionCommand()=="Load") {
 				JFileChooser fc = new JFileChooser();
-				File dir = new File("C:/Users/doron/Desktop/data");
+				File dir = new File("data3/");
 				fc.setCurrentDirectory(dir);
 				fc.showOpenDialog(getParent());
-				if(fc.getSelectedFile().getName().endsWith(".csv")) {
+				if(fc.getSelectedFile()!=null && fc.getSelectedFile().getName().endsWith(".csv")) {
 					PacmanCsvReader.csv(fc.getSelectedFile().getPath(), mainPacmanList, mainFruitsList); //reading the file and generates the PacmanList and the FruitsList 
 					repaint();
 				}

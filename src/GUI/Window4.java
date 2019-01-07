@@ -34,9 +34,6 @@ import GIS_project4.GhostsList;
 import GIS_project4.Player;
 import Geom.Point3D;
 import Robot.Play;
-import graph.Graph_Algo;
-import graph.Graph;
-import graph.Node;
 
 public class Window4 extends JFrame implements MouseListener,ActionListener {
 
@@ -374,7 +371,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example1.csv";	
+				file_name = "data4/Ex4_OOP_example1.csv";	
 				isFileSelected=true; 
 				isThereBoxes=true;
 			}
@@ -384,7 +381,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example2.csv";	
+				file_name = "data4/Ex4_OOP_example2.csv";	
 				isFileSelected=true;
 				isThereBoxes=true;
 			}
@@ -394,7 +391,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example3.csv";	
+				file_name = "data4/Ex4_OOP_example3.csv";	
 				isFileSelected=true;
 				isThereBoxes=true;
 
@@ -405,7 +402,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example4.csv";	
+				file_name = "data4/Ex4_OOP_example4.csv";	
 				isFileSelected=true;
 				isThereBoxes=true;
 
@@ -416,7 +413,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example5.csv";	
+				file_name = "data4/Ex4_OOP_example5.csv";	
 				isFileSelected=true;
 				isThereBoxes=true;
 
@@ -427,7 +424,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example6.csv";	
+				file_name = "data4/Ex4_OOP_example6.csv";	
 				isFileSelected=true;
 				isThereBoxes=true;
 
@@ -438,7 +435,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example7.csv";	
+				file_name = "data4/Ex4_OOP_example7.csv";	
 				isFileSelected=true;
 				isThereBoxes=true;
 
@@ -449,7 +446,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example8.csv";	
+				file_name = "data4/Ex4_OOP_example8.csv";	
 				isFileSelected=true;
 				isThereBoxes=true;
 
@@ -460,7 +457,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "D:/Downloads/Ex4_v0.1/Ex4_OOP/data/Ex4_OOP_example9.csv";	
+				file_name = "data4/Ex4_OOP_example9.csv";
 				isFileSelected=true;
 				isThereBoxes=true;
 
