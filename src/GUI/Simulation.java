@@ -26,7 +26,7 @@ public class Simulation implements Runnable {
 
 
 		while(w4.mainFruitsList.getSize()>0 && w4.timeLeft>0) {  //runs as long as there are fruits left in the game or the time isn't over
-			double aziPlayerGhost=w4.player.isGhostClosest(w4.mainGhostsList);    //calculates the azimuth between the player and a ghost less than 4 meters away.
+			double aziPlayerGhost=w4.player.isGhostClose(w4.mainGhostsList);    //calculates the azimuth between the player and a ghost less than 4 meters away.
 			
 			if(aziPlayerGhost!=-1) {            //if there is a ghost less than 4 meters away
 				w4.play.rotate(aziPlayerGhost+135);  //the angle in which the player is moving to. to avoid ghosts.
@@ -34,6 +34,7 @@ public class Simulation implements Runnable {
 
 			else {            //if there isn't a ghost less than 4 meters away
 				int id=GameAlgo4.quickestPath(w4.mainFruitsList, w4.mainBoxList, w4.player);    //finds the quickest path from the player to a fruit.
+			
 				if(w4.player.playerToPoint().isDirect(w4.mainFruitsList.flArray().get(id).fruitToPoint(),
 						w4.mainBoxList)) {    //if the player has a direct path to the closest fruit.
 					w4.play.rotate(GameAlgo4.movePlayer(w4.player.playerToPoint(),
@@ -75,9 +76,10 @@ public class Simulation implements Runnable {
 		System.out.println(w4.info);
 		w4.play.stop();  //stops the game.
 		System.out.println("**** Game Over ****");
+		w4.dbc.setScore(w4.player.getScore());
+		w4.rank=w4.dbc.rank();
 		w4.isOver=true;
 		w4.repaint();
-
 	};
 
 }

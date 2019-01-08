@@ -211,7 +211,7 @@ public class Player {
 	 * and return it.
 	 * @param gl: the given ghosts list.
 	 */
-	public double isGhostClosest(GhostsList gl) {
+	public double isGhostClose(GhostsList gl) {
 		double azimuth=-1;
 		double dist=0;
 		double [] aziElevDist = new double [2];     //for the azimuth_elevation_dist function.

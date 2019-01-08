@@ -107,10 +107,10 @@ public class MainWindow extends JFrame implements ActionListener,MouseListener {
 
 		//importing the game pictures.
 		try {
-			myImage = ImageIO.read(new File("Ariel1.png"));
-			myPac = ImageIO.read(new File("PacMan.png"));
-			myFru1 = ImageIO.read(new File("g1.png"));
-			start = ImageIO.read(new File("start.png"));
+			myImage = ImageIO.read(new File("Pictures/Ariel1.png"));
+			myPac = ImageIO.read(new File("Pictures/PacMan.png"));
+			myFru1 = ImageIO.read(new File("Pictures/g1.png"));
+			start = ImageIO.read(new File("Pictures/start.png"));
 
 		} catch (IOException e) {
 			e.printStackTrace();

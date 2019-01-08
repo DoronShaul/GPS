@@ -40,7 +40,7 @@ public class GameAlgo4 {
 		myCoords m= new myCoords();
 		///**///builds the Graph ///**///
 		Graph graph= new Graph();
-		String source = "a";
+		String source = "a"; 
 		String target = "b";
 		Node a=new Node(source);
 		a.set_id(0);
@@ -96,7 +96,7 @@ public class GameAlgo4 {
 		while(itf.hasNext()) {
 			Fruit temp = itf.next();
 			if(player.playerToPoint().isDirect(temp.fruitToPoint(), bl)) {
-				currentDist=m.distance3d(player.playerToPoint(), temp.fruitToPoint());
+				currentDist=m.distance3d(player.playerToPoint(), temp.fruitToPoint());     //if there is a direct line between the point, calculates the distance between them.
 			}
 			else {
 				Graph g=new Graph();

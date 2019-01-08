@@ -48,11 +48,13 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 	boolean isFileSelected=false;           //checks if the user already selected a gameboard.
 	boolean isPlayerInit=false;             //checks if the user already created the player.
 	boolean isOver=false;
-	boolean isThereBoxes=false;
+	boolean areThereBoxes=false;
 	double angle=0;                //angle of the player's direction.
 	double timeLeft;               //time left for the game.
-
-
+	int timeLeftPaint;             //the time left in int, so it looks better in the paint.
+	DBconnection dbc = new DBconnection();              //database info.
+	int rank=1;
+	
 	String file_name; //the file name of the game board.
 	Play play;
 	ArrayList<String> board =new ArrayList<String>();   //array list for the game board characters.
@@ -157,15 +159,15 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 
 		try {
 			///reads all the images///
-			myImage = ImageIO.read(new File("Ariel1.png"));
-			myPac = ImageIO.read(new File("PacMan.png"));
-			myFru1 = ImageIO.read(new File("g1.png"));
-			ghost = ImageIO.read(new File("ghost.png"));
-			goku = ImageIO.read(new File("goku.png"));
-			goku2 = ImageIO.read(new File("goku2.png"));
-			goku3 = ImageIO.read(new File("goku3.png"));
-			playerInBox = ImageIO.read(new File("playerinbox.png"));
-			gameOver = ImageIO.read(new File("game-over.png"));
+			myImage = ImageIO.read(new File("Pictures/Ariel1.png"));
+			myPac = ImageIO.read(new File("Pictures/PacMan.png"));
+			myFru1 = ImageIO.read(new File("Pictures/g1.png"));
+			ghost = ImageIO.read(new File("Pictures/ghost.png"));
+			goku = ImageIO.read(new File("Pictures/goku.png"));
+			goku2 = ImageIO.read(new File("Pictures/goku2.png"));
+			goku3 = ImageIO.read(new File("Pictures/goku3.png"));
+			playerInBox = ImageIO.read(new File("Pictures/playerinbox.png"));
+			gameOver = ImageIO.read(new File("Pictures/game-over.png"));
 
 
 		} catch (IOException e) {
@@ -207,9 +209,9 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 			int heightSize= currentPointInPixels[1]-boxMaxPointInPixels[1];     //the box's height from the min point to max point.
 			g2d.setColor(Color.black);
 			g2d.fillRect(currentPointInPixels[0],boxMaxPointInPixels[1], widthSize, heightSize);  //drawing the current box.
-			if(isThereBoxes) {
+			if(areThereBoxes) {
 				boxCorners = mainBoxList.boxesCorners();
-				isThereBoxes=false;
+				areThereBoxes=false;
 			}
 		}
 		//**//**//Pacman//**//**//  
@@ -267,7 +269,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 			}
 			isPlayerInit=false; //does this loop only one time after each "Set Initial Player Position" selection
 		}
-		
+		///score///
 		g2d.setColor(Color.black);
 		int fontSize=30;
 		g2d.setFont(new Font("ariel", Font.PLAIN, fontSize)); 
@@ -298,22 +300,52 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 
 		if(isOver) {
 			g2d.drawImage(gameOver, (getWidth()/2)-300, (getHeight()/2)-300, 600, 600, this);
-		}
+			
+			////draws of the rank////
+	
+			g2d.setColor(Color.black);
+			fontSize=70;
+			g2d.setFont(new Font("ariel", Font.PLAIN, fontSize)); 
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-100, (getHeight()/2)+269);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-100, (getHeight()/2)+268);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-100, (getHeight()/2)+267);
+			
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-100, (getHeight()/2)+271);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-100, (getHeight()/2)+272);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-100, (getHeight()/2)+273);
+			
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-101, (getHeight()/2)+270);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-102, (getHeight()/2)+270);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-103, (getHeight()/2)+270);
+			
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-99, (getHeight()/2)+270);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-98, (getHeight()/2)+270);
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-97, (getHeight()/2)+270);
 
+			g2d.setColor(Color.ORANGE);
+			fontSize=70;
+			g2d.setFont(new Font("ariel", Font.PLAIN, fontSize)); 
+			g2d.drawString("Rank: "+rank, (getWidth()/2)-100, (getHeight()/2)+270);
+
+		}
+		
+		
+		timeLeft = timeLeft/100;
+		timeLeftPaint =(int)timeLeft;
 		g2d.setColor(Color.black);
 		fontSize=30;
 		g2d.setFont(new Font("ariel", Font.PLAIN, fontSize)); 
-		g2d.drawString("time left: "+timeLeft, getWidth()-199, getHeight()-9);
-		g2d.drawString("time left: "+timeLeft, getWidth()-198, getHeight()-8);
-		g2d.drawString("time left: "+timeLeft, getWidth()-197, getHeight()-7);
-		g2d.drawString("time left: "+timeLeft, getWidth()-199, getHeight()-11);
-		g2d.drawString("time left: "+timeLeft, getWidth()-198, getHeight()-12);
-		g2d.drawString("time left: "+timeLeft, getWidth()-197, getHeight()-13);
+		g2d.drawString("time left: "+timeLeftPaint, getWidth()-204, getHeight()-9);
+		g2d.drawString("time left: "+timeLeftPaint, getWidth()-203, getHeight()-8);
+		g2d.drawString("time left: "+timeLeftPaint, getWidth()-202, getHeight()-7);
+		g2d.drawString("time left: "+timeLeftPaint, getWidth()-204, getHeight()-11);
+		g2d.drawString("time left: "+timeLeftPaint, getWidth()-203, getHeight()-12);
+		g2d.drawString("time left: "+timeLeftPaint, getWidth()-202, getHeight()-13);
 
 		g2d.setColor(Color.GREEN);
 		fontSize=30;
 		g2d.setFont(new Font("ariel", Font.PLAIN, fontSize)); 
-		g2d.drawString("time left: "+timeLeft, getWidth()-200, getHeight()-10);
+		g2d.drawString("time left: "+timeLeftPaint, getWidth()-205, getHeight()-10);
 		
 
 
@@ -345,7 +377,6 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 		// TODO Auto-generated method stub
 
 	}
-
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -366,104 +397,73 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 					///the operation for each of the "Gameboard Options" buttons///
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand()=="Example 1") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
 				file_name = "data4/Ex4_OOP_example1.csv";	
 				isFileSelected=true; 
-				isThereBoxes=true;
+				dbc.clear();
+				dbc.setGameHash(2.12825983E9);
 			}
 			if(e.getActionCommand()=="Example 2") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
 				file_name = "data4/Ex4_OOP_example2.csv";	
-				isFileSelected=true;
-				isThereBoxes=true;
+				isFileSelected=true;	
+				dbc.clear();
+				dbc.setGameHash(1.149748017E9);
 			}
 			if(e.getActionCommand()=="Example 3") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
 				file_name = "data4/Ex4_OOP_example3.csv";	
 				isFileSelected=true;
-				isThereBoxes=true;
-
+				dbc.clear();
+				dbc.setGameHash(-6.8331707E8);
 			}
 			if(e.getActionCommand()=="Example 4") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
 				file_name = "data4/Ex4_OOP_example4.csv";	
 				isFileSelected=true;
-				isThereBoxes=true;
-
+				dbc.clear();
+				dbc.setGameHash(1.193961129E9);
 			}
 			if(e.getActionCommand()=="Example 5") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
+
 				file_name = "data4/Ex4_OOP_example5.csv";	
 				isFileSelected=true;
-				isThereBoxes=true;
-
+				dbc.clear();
+				dbc.setGameHash(1.577914705E9);
 			}
 			if(e.getActionCommand()=="Example 6") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
 				file_name = "data4/Ex4_OOP_example6.csv";	
 				isFileSelected=true;
-				isThereBoxes=true;
-
+				dbc.clear();
+				dbc.setGameHash(-1.315066918E9);
 			}
 			if(e.getActionCommand()=="Example 7") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
 				file_name = "data4/Ex4_OOP_example7.csv";	
 				isFileSelected=true;
-				isThereBoxes=true;
-
+				dbc.clear();
+				dbc.setGameHash(-1.377331871E9);
 			}
 			if(e.getActionCommand()=="Example 8") {
-				mainBoxList.clear();
-				mainFruitsList.clear();
-				mainGhostsList.clear();
-				mainPacmanList.clear();
-				boxCorners.clear();
 				file_name = "data4/Ex4_OOP_example8.csv";	
 				isFileSelected=true;
-				isThereBoxes=true;
-
+				dbc.clear();
+				dbc.setGameHash(3.06711633E8);
 			}
 			if(e.getActionCommand()=="Example 9") {
+				file_name = "data4/Ex4_OOP_example9.csv";
+				isFileSelected=true;
+				dbc.clear();
+				dbc.setGameHash(9.19248096E8);
+				
+			}
+			
+			
+			//++//creates the game according to the relevant file.//++//
+			if (isFileSelected) {
+				dbc.setMyId(308545151);
+				dbc.setMyId2(308224450);
 				mainBoxList.clear();
 				mainFruitsList.clear();
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
-				file_name = "data4/Ex4_OOP_example9.csv";
-				isFileSelected=true;
-				isThereBoxes=true;
-
-			}
-			//++//creates the game according to the relevant file.//++//
-			if (isFileSelected) {
+				areThereBoxes=true;
 				play = new Play(file_name); //creates the game according to the relevant file 
 				play.setIDs(308545151,308224450); //the id's of the players.
 				board =play.getBoard();     //gets the board's characters.
@@ -495,6 +495,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				mainGhostsList.clear();
 				mainPacmanList.clear();
 				boxCorners.clear();
+				dbc.clear();
 				player = new Player();
 				isOver=false;
 				repaint();

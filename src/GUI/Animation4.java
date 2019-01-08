@@ -43,6 +43,8 @@ public class Animation4 implements Runnable {
 		w4.play.stop();  //stops the game.
 		System.out.println("**** Game Over ****");
 		w4.isOver=true;
+		w4.dbc.setScore(w4.player.getScore());
+		w4.rank=w4.dbc.rank();
 		w4.repaint();
 	}
 	
