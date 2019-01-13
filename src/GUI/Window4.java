@@ -49,6 +49,8 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 	boolean isPlayerInit=false;             //checks if the user already created the player.
 	boolean isOver=false;
 	boolean areThereBoxes=false;
+	boolean isSim=false;
+	Point3D initSim= new Point3D(0, 0);
 	double angle=0;                //angle of the player's direction.
 	double timeLeft;               //time left for the game.
 	int timeLeftPaint;             //the time left in int, so it looks better in the paint.
@@ -247,6 +249,14 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 		}
 		//**//**//player//**//**//
 
+		if(isSim) {
+			Player p1 = new Player(0,initSim.x(),initSim.y(),0,20.0,1,0);
+			this.player=p1;
+			isSim=false;
+		}
+		
+		
+		
 		///creates the player according to the user location selection///
 		if (isPlayerInit && mainFruitsList.getSize()>0){
 			Player player1 = new Player(0,p.x(),p.y(),0,20.0,1,0) ; //creates a new player
@@ -268,6 +278,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				g2d.drawImage(playerInBox, (getWidth()/2)-150, (getHeight()/2)-10, 300, 20, this);
 			}
 			isPlayerInit=false; //does this loop only one time after each "Set Initial Player Position" selection
+			isSim=false;
 		}
 		///score///
 		g2d.setColor(Color.black);
@@ -288,13 +299,13 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 		g2d.drawString("score: "+player.getScore(), 10, getHeight()-10);
 		currentPlayerPos=player.playerToPoint();  //converting the player to Point3D .
 		currentPointInPixels=Map.coordsToPixels(currentPlayerPos, getWidth(), getHeight()); //converting the Point3D to pixels.
-		if(player.getScore()<2) {  //if the score is under 2 points
+		if(player.getScore()<5) {  //if the score is under 5 points
 			g2d.drawImage(goku, currentPointInPixels[0]-30, currentPointInPixels[1]-30, 60, 60, this); 
 		}
-		if(player.getScore()>=2 && player.getScore()<4) { //if the score is between 3 or 4
+		if(player.getScore()>=5 && player.getScore()<10) { //if the score is between 5 or 9
 			g2d.drawImage(goku2, currentPointInPixels[0]-30, currentPointInPixels[1]-30, 60, 60, this); 
 		}
-		if(player.getScore()>=4) { //if the score is greater than 4
+		if(player.getScore()>=10) { //if the score is greater than 9
 			g2d.drawImage(goku3, currentPointInPixels[0]-30, currentPointInPixels[1]-30, 60, 60, this); 
 		}
 
@@ -396,29 +407,34 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 		@Override
 					///the operation for each of the "Gameboard Options" buttons///
 		public void actionPerformed(ActionEvent e) {
+			
 			if(e.getActionCommand()=="Example 1") {
-				file_name = "data4/Ex4_OOP_example1.csv";	
+				file_name = "data4/Ex4_OOP_example1.csv";
 				isFileSelected=true; 
 				dbc.clear();
 				dbc.setGameHash(2.12825983E9);
+				initSim = new Point3D(32.105455859188545,35.209387956129035);
 			}
 			if(e.getActionCommand()=="Example 2") {
 				file_name = "data4/Ex4_OOP_example2.csv";	
 				isFileSelected=true;	
 				dbc.clear();
 				dbc.setGameHash(1.149748017E9);
+				initSim = new Point3D(32.10493646539379,35.20907530580645);
 			}
 			if(e.getActionCommand()=="Example 3") {
 				file_name = "data4/Ex4_OOP_example3.csv";	
 				isFileSelected=true;
 				dbc.clear();
 				dbc.setGameHash(-6.8331707E8);
+				initSim = new Point3D(32.103027465393794,35.20701051096774);
 			}
 			if(e.getActionCommand()=="Example 4") {
 				file_name = "data4/Ex4_OOP_example4.csv";	
 				isFileSelected=true;
 				dbc.clear();
 				dbc.setGameHash(1.193961129E9);
+				initSim = new Point3D(32.103027465393794,35.20701051096774);
 			}
 			if(e.getActionCommand()=="Example 5") {
 
@@ -426,30 +442,35 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				isFileSelected=true;
 				dbc.clear();
 				dbc.setGameHash(1.577914705E9);
+				initSim = new Point3D(32.103027465393794,35.20701051096774);
 			}
 			if(e.getActionCommand()=="Example 6") {
 				file_name = "data4/Ex4_OOP_example6.csv";	
 				isFileSelected=true;
 				dbc.clear();
 				dbc.setGameHash(-1.315066918E9);
+				initSim = new Point3D(32.105378405727926,35.208202490322584);
 			}
 			if(e.getActionCommand()=="Example 7") {
 				file_name = "data4/Ex4_OOP_example7.csv";	
 				isFileSelected=true;
 				dbc.clear();
 				dbc.setGameHash(-1.377331871E9);
+				initSim = new Point3D(32.102822441527444,35.21133550709678);
 			}
 			if(e.getActionCommand()=="Example 8") {
 				file_name = "data4/Ex4_OOP_example8.csv";	
 				isFileSelected=true;
 				dbc.clear();
 				dbc.setGameHash(3.06711633E8);
+				initSim = new Point3D(32.10390678997613,35.203825385806454);
 			}
 			if(e.getActionCommand()=="Example 9") {
 				file_name = "data4/Ex4_OOP_example9.csv";
 				isFileSelected=true;
 				dbc.clear();
 				dbc.setGameHash(9.19248096E8);
+				initSim = new Point3D(32.10390678997613,35.203825385806454);
 				
 			}
 			
@@ -467,7 +488,8 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				play = new Play(file_name); //creates the game according to the relevant file 
 				play.setIDs(308545151,308224450); //the id's of the players.
 				board =play.getBoard();     //gets the board's characters.
-				creatingGameCharacters(mainPacmanList, mainFruitsList, mainBoxList,mainGhostsList, board);  //creates all the characters according to the relevant file board. 
+				creatingGameCharacters(mainPacmanList, mainFruitsList, mainBoxList,mainGhostsList, board);  //creates all the characters according to the relevant file board.
+				isSim=true;
 				isFileSelected=false;
 				repaint();
 			}
@@ -477,10 +499,12 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 					Animation4 a4 = new Animation4(w4); 
 					Thread myThread = new Thread(a4);
 					myThread.start();	//starts the animation thread
+					isSim=false;
 				}
 			}
 			if(e.getActionCommand()=="Simulation") {
 				if(mainFruitsList.getSize()>0 && player.getLat()>0) {
+					isSim=true;
 					Simulation sim = new Simulation(w4); 
 					Thread myThread = new Thread(sim);
 					myThread.start();	//starts the animation thread
@@ -498,6 +522,7 @@ public class Window4 extends JFrame implements MouseListener,ActionListener {
 				dbc.clear();
 				player = new Player();
 				isOver=false;
+				isSim=false;
 				repaint();
 			}
 			//the Set Initial Player Position button//
